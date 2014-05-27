@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-
+#include "matrix.h"
 
 //ESTO VA A IR EN EL .H
 
@@ -10,6 +10,10 @@ float * makematrix (int rows, int column);  //creara una matriz con los elemento
 void randomatrix (float * matrix,int minnum,int maxnum);	//se llamara si se quiere inicializar con numeros random y si no, flaco llenala vos
 float * sumatrix (float * matrix1, float * matrix2);     //suma dos matrices, devuelve puntero a null si no se pueden sumar porque no son del mismo tamaño o no hay memoria suficiente para dar respuesta
 float * restamatrix (float * matrix1, float * matrix2); //lo mismo que la de suma, pero con resta
+float getvalmax (float * matrix);
+float getminval (float * matrix);
+
+
 
 #define ERROR 1
 
@@ -24,6 +28,63 @@ void main ()
 {
 	printf("nada\n");
 }
+
+float getvalmax (float * matrix)
+{
+
+	int cantfilas,cantcolumnas;
+
+	cantfilas=*(matrix-2);
+	cantcolumnas=*(matrix-1);
+
+	int i,j;
+	float k=(float)0;
+	for(i=0;i<cantfilas;++i)
+	{
+		for(j=0;j<cantcolumnas;++j)
+		{
+			if(k<(*(matrix+(i*cantcolumnas)+j)))
+			{
+				k=*(matrix+(i*cantcolumnas)+j);
+			}
+		}
+	}
+
+return k;
+}
+
+
+float getminval (float * matrix)
+{
+
+        int cantfilas,cantcolumnas;
+
+        cantfilas=*(matrix-2);
+        cantcolumnas=*(matrix-1);
+
+        int i,j;
+        float k=(float)0;
+        for(i=0;i<cantfilas;++i)
+        {
+                for(j=0;j<cantcolumnas;++j)
+                {
+                        if(k>(*(matrix+(i*cantcolumnas)+j)))
+                        {
+                                k=*(matrix+(i*cantcolumnas)+j);
+                        }
+                }
+        }
+
+return k;
+}
+
+
+
+
+
+
+
+
 
 float * makematrix (int rows,int columns)
 {
