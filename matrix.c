@@ -12,7 +12,8 @@ float * sumatrix (float * matrix1, float * matrix2);     //suma dos matrices, de
 float * restamatrix (float * matrix1, float * matrix2); //lo mismo que la de suma, pero con resta
 float getvalmax (float * matrix);
 float getminval (float * matrix);
-
+int getfilas (float * matrix);
+int getcolumnas (float * matrix);		//estas 4 funciones devuelven lo pedido sobre matrices que estan en el mismo formato de esta libreria
 
 
 #define ERROR 1
@@ -22,6 +23,19 @@ float getminval (float * matrix);
 
 
 //HASTA ACA
+
+
+int getfilas (float * matrix)
+{
+	return ((int)(*(matrix-2)));
+}
+
+int getcolumnas (float * matrix)
+{
+	return ((int)(*(matrix-1)));
+}
+
+
 
 
 void main ()
