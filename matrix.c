@@ -6,32 +6,11 @@
 
 //Libreria MATRICES, diferentes funciones para trabajar con estas matrices
 
-void printmatrix (float * matrix)
-{
-
-	int columnas;
-	int filas;
-
-	filas=(int)(*(matrix-2));
-	columnas=(int)(*(matrix-1));
-
-	int i,j;	//contadores
-
-	for(i=0; i<filas ; ++i)
-	{
-		for(j=0;j<columnas;	++j)
-		{
-
-			printf("%g    ",*(matrix+i*columnas+j));
-		}
-		printf("\n");
-	}
-}
 
 
 
 
-float * produtcomatrix (float * matA, float * matB)
+float * productomatrix (float * matA, float * matB)
 {
 	float  filasA;
 	float  filasB;
@@ -52,7 +31,7 @@ float * produtcomatrix (float * matA, float * matB)
 
 	float * matC;	//reservo lugar para el resultado
 
-	matC=(float *)malloc((((int)filasA*colsB)*(sizeof(float)))+2);
+	matC=(float *)malloc((((int)filasA*colsB)*(sizeof(float)))+(2*(sizeof(float))));
 
 	if(matC==NULL)
 	{
@@ -96,6 +75,168 @@ return matC;
 
 
 
+
+
+
+
+
+
+
+
+
+float * restamatrix (float * matrix1, float * matrix2)
+{
+	//como primera instancia chequeo que las filas y columnas de las matrices 1 y dos sean iguales
+
+	float rowsmat1, colsmat1;
+	float rowsmat2, colsmat2;	//Creo 2 variables que sirven para ver cuales son los  tamaños de las matrices que recibo (deben ser iguales)
+
+	rowsmat1=*(matrix1-2);
+
+	colsmat1=*(matrix1-1);
+
+
+	rowsmat2=*(matrix2-2);			//Recordando que el formato de matrices vienen dos lugares antes donde indican su tamaño
+
+	colsmat2=*(matrix2-1);
+
+	int estadotemp=0;
+
+
+	if((int)colsmat2!=(int)colsmat1)
+	{
+		estadotemp=ERROR;
+		printf("Las matrices no tienen el mismo numero de columnas\n");
+	}
+
+	if((int)rowsmat1!=(int)rowsmat2)
+	{						//Modifico la variable estado temporal SI son de distinto tamaño
+		estadotemp=ERROR;
+		printf("Las MAtrices no tienen el mismo numero de filas\n");
+	}
+
+
+	if(estadotemp==ERROR)
+	{
+		return NULL;
+	}
+
+	if(estadotemp==0)
+	{
+	 	float * matresult;	//creo puntero a donde devolvere el resultado
+		matresult=(float *)malloc((((int)(rowsmat1*colsmat1))*(sizeof(float)))+(2*(sizeof(float))));
+		if(matresult==NULL)
+		{
+
+			printf("No hay memoria para el resultado\n");
+			return NULL;					//Devuelve no si no hay memoria para el resultado
+
+		}
+
+		*matresult=rowsmat1;
+		*(matresult+1)=colsmat1;	//aplico el formato
+
+		matresult=matresult+2;		//avanzo al inicio de la matriz en si
+
+		int i,j;
+
+		for(i=0;i<(int)rowsmat1;++i)
+		{
+
+			for(j=0;j<(int)colsmat1;++j)
+			{
+
+				*(matresult+(i*((int)colsmat1))+j)=(*(matrix1+(i*((int)colsmat1))+j))-(*(matrix2+(i*((int)colsmat1))+j));	//en vez de sumar, resto
+
+			}
+
+		}
+
+		return matresult;
+
+	}
+
+	return NULL; //por si las dudas agrego este ultimo
+}
+
+float * sumatrix (float * matrix1, float * matrix2)	//suma dos matrices, devuelve puntero a null si no se pueden sumar porque no son del mismo tamaño o no hay memoria suficiente para dar respuesta
+{
+	//como primera instancia chequeo que las filas y columnas de las matrices 1 y dos sean iguales
+
+	float rowsmat1, colsmat1;
+	float rowsmat2, colsmat2;	//Creo 2 variables que sirven para ver cuales son los  tamaños de las matrices que recibo (deben ser iguales)
+
+	rowsmat1=*(matrix1-2);
+
+	colsmat1=*(matrix1-1);
+
+
+	rowsmat2=*(matrix2-2);			//Recordando que el formato de matrices vienen dos lugares antes donde indican su tamaño
+
+	colsmat2=*(matrix2-1);
+
+
+
+	int estadotemp=0;
+
+	if((int)colsmat2!=(int)colsmat1)
+	{
+		estadotemp=ERROR;
+		printf("Las matrices no tienen el mismo numero de columnas\n");
+	}
+
+	if((int)rowsmat1!=(int)rowsmat2)
+	{						//Modifico la variable estado temporal SI son de distinto tamaño
+		estadotemp=ERROR;
+		printf("Las MAtrices no tienen el mismo numero de filas\n");
+	}
+
+	if(estadotemp==ERROR)
+	{
+		return NULL;
+	}
+
+	// hasta aca DEBUG
+	if(estadotemp==0)
+	{
+	 	float * matresult;	//creo puntero a donde devolvere el resultado
+
+		matresult=(float *)malloc((((int)(rowsmat1*colsmat1))*(sizeof(float)))+(2*(sizeof(float))));
+		if(matresult==NULL)
+		{
+
+			printf("No hay memoria para el resultado\n");
+			return NULL;					//Devuelve no si no hay memoria para el resultado
+
+		}
+
+		*matresult=rowsmat1;
+		*(matresult+1)=colsmat1;	//aplico el formato
+
+		matresult=matresult+2;		//avanzo al inicio de la matriz en si
+
+		int i,j;
+
+		for(i=0;i<(int)rowsmat1;++i)
+		{
+
+			for(j=0;j<((int)colsmat1);++j)
+			{
+
+				*(matresult+(i*((int)colsmat1))+j)=(*(matrix1+(i*((int)colsmat1))+j))+(*(matrix2+(i*((int)colsmat1))+j));
+
+			}
+
+		}
+
+		return matresult;
+
+	}
+
+	return NULL; //por si las dudas agrego este ultimo
+}
+
+// no BUGS from here on
 int getfilas (float * matrix)
 {
 	return ((int)(*(matrix-2)));
@@ -110,7 +251,7 @@ int getcolumnas (float * matrix)
 
 
 
-float getvalmax (float * matrix)
+int getvalmax (float * matrix)
 {
 
 	int cantfilas,cantcolumnas;
@@ -119,14 +260,14 @@ float getvalmax (float * matrix)
 	cantcolumnas=(int)*(matrix-1);
 
 	int i,j;
-	float k=(float)0;
+	int k=0;
 	for(i=0;i<cantfilas;++i)
 	{
 		for(j=0;j<cantcolumnas;++j)
 		{
-			if(k<(*(matrix+(i*cantcolumnas)+j)))
+			if(k<((int)*(matrix+(i*cantcolumnas)+j)))
 			{
-				k=*(matrix+(i*cantcolumnas)+j);
+				k=(int)*(matrix+(i*cantcolumnas)+j);
 			}
 		}
 	}
@@ -135,7 +276,7 @@ return k;
 }
 
 
-float getminval (float * matrix)
+int getminval (float * matrix)
 {
 
         int cantfilas,cantcolumnas;
@@ -144,15 +285,18 @@ float getminval (float * matrix)
         cantcolumnas=(int)*(matrix-1);
 
         int i,j;
-        float k=(float)0;
+        int k=(int)*(matrix);
+
         for(i=0;i<cantfilas;++i)
         {
                 for(j=0;j<cantcolumnas;++j)
                 {
-                        if(k>(*(matrix+(i*cantcolumnas)+j)))
+
+                        if(k>((int)*(matrix+(i*cantcolumnas)+j)))
                         {
-                                k=*(matrix+(i*cantcolumnas)+j);
+                                k=(int)*(matrix+((i*cantcolumnas)+j));
                         }
+
                 }
         }
 
@@ -162,17 +306,12 @@ return k;
 
 
 
-
-
-
-
-
 float * makematrix (int rows,int columns)
 {
 
 	float * matrix;
 
-	matrix=(float *) malloc(((rows*columns)*(sizeof(float)))+2);
+	matrix=(float *) malloc(((rows*columns)*(sizeof(float)))+(2*(sizeof(float))));
 	if(matrix==NULL)
 	{
 
@@ -214,148 +353,27 @@ void randomatrix(float * matrix ,int minnum, int maxnum)
 }
 
 
-float * sumatrix (float * matrix1, float * matrix2)	//suma dos matrices, devuelve puntero a null si no se pueden sumar porque no son del mismo tamaño o no hay memoria suficiente para dar respuesta
+
+void printmatrix (float * matrix)
 {
-	//como primera instancia chequeo que las filas y columnas de las matrices 1 y dos sean iguales
 
-	float rowsmat1, colsmat1;
-	float rowsmat2, colsmat2;	//Creo 2 variables que sirven para ver cuales son los  tamaños de las matrices que recibo (deben ser iguales)
+	int columnas;
+	int filas;
 
+	filas=(int)(*(matrix-2));
+	columnas=(int)(*(matrix-1));
 
-	rowsmat1=*(matrix1-2);
+	int i,j;	//contadores
 
-	colsmat1=*(matrix1-1);
-
-
-	rowsmat2=*(matrix2-2);			//Recordando que el formato de matrices vienen dos lugares antes donde indican su tamaño
-
-	colsmat2=*(matrix2-1);
-
-	int estadotemp=0;
-
-
-	if((int)colsmat2!=(int)colsmat1)
+	for(i=0; i<filas ; ++i)
 	{
-		estadotemp=ERROR;
-		printf("Las matrices no tienen el mismo numero de columnas\n");
-	}
-
-	if((int)rowsmat1!=(int)rowsmat2)
-	{						//Modifico la variable estado temporal SI son de distinto tamaño
-		estadotemp=ERROR;
-		printf("Las MAtrices no tienen el mismo numero de filas\n");
-	}
-
-
-	if(estadotemp==0)
-	{
-	 	float * matresult;	//creo puntero a donde devolvere el resultado
-
-		matresult=(float *)malloc((((int)(rowsmat1*colsmat1))*(sizeof(float)))+2);
-		if(matresult==NULL)
+		for(j=0;j<columnas;	++j)
 		{
 
-			printf("No hay memoria para el resultado\n");
-			return NULL;					//Devuelve no si no hay memoria para el resultado
-
+			printf("%g    ",*(matrix+i*columnas+j));
 		}
-
-		*matresult=rowsmat1;
-		*(matresult+1)=colsmat1;	//aplico el formato
-
-		matresult=matresult+2;		//avanzo al inicio de la matriz en si
-
-		int i,j;
-
-		for(i=0;i<(int)rowsmat1;++i)
-		{
-
-			for(j=0;i<(int)colsmat1;++j)
-			{
-
-				*(matresult+(i*((int)colsmat1))+j)=(*(matrix1+(i*((int)colsmat1))+j))+(*(matrix2+(i*((int)colsmat1))+j));
-
-			}
-
-		}
-
-		return matresult;
-
+		printf("\n");
 	}
-
-	return NULL; //por si las dudas agrego este ultimo
 }
 
 
-
-float * restamatrix (float * matrix1, float * matrix2)
-{
-	//como primera instancia chequeo que las filas y columnas de las matrices 1 y dos sean iguales
-
-	float rowsmat1, colsmat1;
-	float rowsmat2, colsmat2;	//Creo 2 variables que sirven para ver cuales son los  tamaños de las matrices que recibo (deben ser iguales)
-
-
-	rowsmat1=*(matrix1-2);
-
-	colsmat1=*(matrix1-1);
-
-
-	rowsmat2=*(matrix2-2);			//Recordando que el formato de matrices vienen dos lugares antes donde indican su tamaño
-
-	colsmat2=*(matrix2-1);
-
-	int estadotemp=0;
-
-
-	if((int)colsmat2!=(int)colsmat1)
-	{
-		estadotemp=ERROR;
-		printf("Las matrices no tienen el mismo numero de columnas\n");
-	}
-
-	if((int)rowsmat1!=(int)rowsmat2)
-	{						//Modifico la variable estado temporal SI son de distinto tamaño
-		estadotemp=ERROR;
-		printf("Las MAtrices no tienen el mismo numero de filas\n");
-	}
-
-
-	if(estadotemp==0)
-	{
-	 	float * matresult;	//creo puntero a donde devolvere el resultado
-
-		matresult=(float *)malloc((((int)(rowsmat1*colsmat1))*(sizeof(float)))+2);
-		if(matresult==NULL)
-		{
-
-			printf("No hay memoria para el resultado\n");
-			return NULL;					//Devuelve no si no hay memoria para el resultado
-
-		}
-
-		*matresult=rowsmat1;
-		*(matresult+1)=colsmat1;	//aplico el formato
-
-		matresult=matresult+2;		//avanzo al inicio de la matriz en si
-
-		int i,j;
-
-		for(i=0;i<(int)rowsmat1;++i)
-		{
-
-			for(j=0;i<(int)colsmat1;++j)
-			{
-
-				*(matresult+(i*((int)colsmat1))+j)=(*(matrix1+(i*((int)colsmat1))+j))-(*(matrix2+(i*((int)colsmat1))+j));	//en vez de sumar, resto
-
-			}
-
-		}
-
-		return matresult;
-
-	}
-
-	return NULL; //por si las dudas agrego este ultimo
-}
