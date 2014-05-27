@@ -6,6 +6,8 @@
 
 //ESTO VA A IR EN EL .H
 
+//La devolucion de punteros a NULL implica un error interno de la funcion, explicado con un print
+
 float * makematrix (int rows, int column);  //creara una matriz con los elementos pedidos y en los primeros dos n° dara la cant de rows y columns 
 void randomatrix (float * matrix,int minnum,int maxnum);	//se llamara si se quiere inicializar con numeros random y si no, flaco llenala vos
 float * sumatrix (float * matrix1, float * matrix2);     //suma dos matrices, devuelve puntero a null si no se pueden sumar porque no son del mismo tamaño o no hay memoria suficiente para dar respuesta
@@ -14,6 +16,8 @@ float getvalmax (float * matrix);
 float getminval (float * matrix);
 int getfilas (float * matrix);
 int getcolumnas (float * matrix);		//estas 4 funciones devuelven lo pedido sobre matrices que estan en el mismo formato de esta libreria
+float * productomatrix(float * matA, float * matB);	//el programa hara: A.B=matC matC es el resultado
+
 
 
 #define ERROR 1
@@ -23,6 +27,77 @@ int getcolumnas (float * matrix);		//estas 4 funciones devuelven lo pedido sobre
 
 
 //HASTA ACA
+void main ()
+{
+        printf("nada\n");	//ELIMINAR DESP DE COMPILAR
+}
+
+
+
+
+float * produtcomatrix (float * matA, float * matB)
+{
+	float  filasA;
+	float  filasB;
+	float  colsB;
+	float  colsA;
+
+	filasA=*(matA-2);
+	colsA=*(matA-1);
+
+	filasB=*(matB-2);
+	colsB=*(matB-1);		//siguiendo el formato de la libreria obtengo los valores de las cantidades de columnas y filas
+
+	if((int)colsA!=(int)filasB)
+	{
+		printf("Las dimensiones no permiten la multiplicacion de estas matrices\n");
+		return NULL;	//devuelvo un puntero a null mosrando que hubo un error
+	}
+
+	float * matC;	//reservo lugar para el resultado
+
+	matC=(float *)malloc((((int)filasA*colsB)*(sizeof(float)))+2);
+
+	if(matC==NULL)
+	{
+		printf("No hay memoria para devolver el resultado\n");
+		return NULL;
+	}
+
+	*matC=filasA;
+	*(matC+1)=colsB;
+
+	matC+=2;			//cumplo con el formato, y ahora comienzo con la cuenta
+
+	int i,j;		//primero manejo filas y columnas de mat c, en el anidado mas interno del for de matC, trabajo con la mult de matA.matB
+
+	for(i=0;i<(int)filasA;++i)
+	{
+		for(j=0;j<(int)colsB;++i)
+		{
+
+			int k;	//aqui trabajo con la mult
+			float result=0;		//aqui esta el resultado parcial de cada mult
+			for(k=0;	k<(int)colsB	;++k)
+			{
+
+				result+=(*(matA+i*((int)colsA)+k))*(*(matB+k*((int)colsB)+j));
+			}
+			*(matC+i*((int)colsB)+j)=result;
+		}
+	}
+
+return matC;
+
+}
+
+
+
+
+
+
+
+
 
 
 int getfilas (float * matrix)
@@ -38,18 +113,14 @@ int getcolumnas (float * matrix)
 
 
 
-void main ()
-{
-	printf("nada\n");
-}
 
 float getvalmax (float * matrix)
 {
 
 	int cantfilas,cantcolumnas;
 
-	cantfilas=*(matrix-2);
-	cantcolumnas=*(matrix-1);
+	cantfilas=(int)*(matrix-2);
+	cantcolumnas=(int)*(matrix-1);
 
 	int i,j;
 	float k=(float)0;
@@ -73,8 +144,8 @@ float getminval (float * matrix)
 
         int cantfilas,cantcolumnas;
 
-        cantfilas=*(matrix-2);
-        cantcolumnas=*(matrix-1);
+        cantfilas=(int)*(matrix-2);
+        cantcolumnas=(int)*(matrix-1);
 
         int i,j;
         float k=(float)0;
@@ -167,13 +238,13 @@ float * sumatrix (float * matrix1, float * matrix2)	//suma dos matrices, devuelv
 	int estadotemp=0;
 
 
-	if(colsmat2!=colsmat1)
+	if((int)colsmat2!=(int)colsmat1)
 	{
 		estadotemp=ERROR;
 		printf("Las matrices no tienen el mismo numero de columnas\n");
 	}
 
-	if(rowsmat1!=rowsmat2)
+	if((int)rowsmat1!=(int)rowsmat2)
 	{						//Modifico la variable estado temporal SI son de distinto tamaño
 		estadotemp=ERROR;
 		printf("Las MAtrices no tienen el mismo numero de filas\n");
@@ -184,7 +255,7 @@ float * sumatrix (float * matrix1, float * matrix2)	//suma dos matrices, devuelv
 	{
 	 	float * matresult;	//creo puntero a donde devolvere el resultado
 
-		matresult=(float *)malloc(((rowsmat1*colsmat1)*(sizeof(float)))+2);
+		matresult=(float *)malloc((((int)(rowsmat1*colsmat1))*(sizeof(float)))+2);
 		if(matresult==NULL)
 		{
 
@@ -200,10 +271,10 @@ float * sumatrix (float * matrix1, float * matrix2)	//suma dos matrices, devuelv
 
 		int i,j;
 
-		for(i=0;i<rowsmat1;++i)
+		for(i=0;i<(int)rowsmat1;++i)
 		{
 
-			for(j=0;i<colsmat1;++j)
+			for(j=0;i<(int)colsmat1;++j)
 			{
 
 				*(matresult+(i*((int)colsmat1))+j)=(*(matrix1+(i*((int)colsmat1))+j))+(*(matrix2+(i*((int)colsmat1))+j));
@@ -241,13 +312,13 @@ float * restamatrix (float * matrix1, float * matrix2)
 	int estadotemp=0;
 
 
-	if(colsmat2!=colsmat1)
+	if((int)colsmat2!=(int)colsmat1)
 	{
 		estadotemp=ERROR;
 		printf("Las matrices no tienen el mismo numero de columnas\n");
 	}
 
-	if(rowsmat1!=rowsmat2)
+	if((int)rowsmat1!=(int)rowsmat2)
 	{						//Modifico la variable estado temporal SI son de distinto tamaño
 		estadotemp=ERROR;
 		printf("Las MAtrices no tienen el mismo numero de filas\n");
@@ -258,7 +329,7 @@ float * restamatrix (float * matrix1, float * matrix2)
 	{
 	 	float * matresult;	//creo puntero a donde devolvere el resultado
 
-		matresult=(float *)malloc(((rowsmat1*colsmat1)*(sizeof(float)))+2);
+		matresult=(float *)malloc((((int)(rowsmat1*colsmat1))*(sizeof(float)))+2);
 		if(matresult==NULL)
 		{
 
@@ -274,10 +345,10 @@ float * restamatrix (float * matrix1, float * matrix2)
 
 		int i,j;
 
-		for(i=0;i<rowsmat1;++i)
+		for(i=0;i<(int)rowsmat1;++i)
 		{
 
-			for(j=0;i<colsmat1;++j)
+			for(j=0;i<(int)colsmat1;++j)
 			{
 
 				*(matresult+(i*((int)colsmat1))+j)=(*(matrix1+(i*((int)colsmat1))+j))-(*(matrix2+(i*((int)colsmat1))+j));	//en vez de sumar, resto
