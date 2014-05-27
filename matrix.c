@@ -23,7 +23,7 @@ float * productomatrix (float * matA, float * matB)
 	filasB=*(matB-2);
 	colsB=*(matB-1);		//siguiendo el formato de la libreria obtengo los valores de las cantidades de columnas y filas
 
-	if((int)colsA!=(int)filasB)
+	if(((int)colsA)!=((int)filasB))
 	{
 		printf("Las dimensiones no permiten la multiplicacion de estas matrices\n");
 		return NULL;	//devuelvo un puntero a null mosrando que hubo un error
@@ -48,7 +48,7 @@ float * productomatrix (float * matA, float * matB)
 
 	for(i=0;i<(int)filasA;++i)
 	{
-		for(j=0;j<(int)colsB;++i)
+		for(j=0;j<(int)colsB;++j)
 		{
 
 			int k;	//aqui trabajo con la mult
