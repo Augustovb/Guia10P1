@@ -4,32 +4,28 @@
 #include <time.h>
 #include "matrix.h"
 
-//ESTO VA A IR EN EL .H
+//Libreria MATRICES, diferentes funciones para trabajar con estas matrices
 
-//La devolucion de punteros a NULL implica un error interno de la funcion, explicado con un print
-
-float * makematrix (int rows, int column);  //creara una matriz con los elementos pedidos y en los primeros dos n° dara la cant de rows y columns 
-void randomatrix (float * matrix,int minnum,int maxnum);	//se llamara si se quiere inicializar con numeros random y si no, flaco llenala vos
-float * sumatrix (float * matrix1, float * matrix2);     //suma dos matrices, devuelve puntero a null si no se pueden sumar porque no son del mismo tamaño o no hay memoria suficiente para dar respuesta
-float * restamatrix (float * matrix1, float * matrix2); //lo mismo que la de suma, pero con resta
-float getvalmax (float * matrix);
-float getminval (float * matrix);
-int getfilas (float * matrix);
-int getcolumnas (float * matrix);		//estas 4 funciones devuelven lo pedido sobre matrices que estan en el mismo formato de esta libreria
-float * productomatrix(float * matA, float * matB);	//el programa hara: A.B=matC matC es el resultado
-
-
-
-#define ERROR 1
-
-
-
-
-
-//HASTA ACA
-void main ()
+void printmatrix (float * matrix)
 {
-        printf("nada\n");	//ELIMINAR DESP DE COMPILAR
+
+	int columnas;
+	int filas;
+
+	filas=(int)(*(matrix-2));
+	columnas=(int)(*(matrix-1));
+
+	int i,j;	//contadores
+
+	for(i=0; i<filas ; ++i)
+	{
+		for(j=0;j<columnas;	++j)
+		{
+
+			printf("%g    ",*(matrix+i*columnas+j));
+		}
+		printf("\n");
+	}
 }
 
 
